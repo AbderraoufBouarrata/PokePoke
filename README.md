@@ -12,3 +12,5 @@ to start next js project \
 `npm run dev`
 
 and voila!
+
+Api used (PokeApi)[https://pokeapi.co/]
