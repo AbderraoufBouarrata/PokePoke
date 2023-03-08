@@ -13,4 +13,4 @@ to start next js project \
 
 and voila!
 
-Api used (PokeApi)[https://pokeapi.co/]
+Api used [PokeApi](https://pokeapi.co/)
