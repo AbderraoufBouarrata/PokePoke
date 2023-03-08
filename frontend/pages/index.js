@@ -66,7 +66,7 @@ export default function Home() {
 
   return (
     <>
-      <SearchParameters />
+      <SearchParameters details={details} setDetails={setDetails} />
       {isLoading ? (
         <div className='my-8 flex justify-center items-center'><LoadingButton /></div>
       ) : (
