@@ -10,8 +10,8 @@ npm i cors
 npm i dotenv
 npm i express
 npm i nodemon
-// or simply npm install
 ```
+or simply `npm install` and that will install all required packages in package.json
 right after that the front end packages but fird we chagne directory to front end like so `cd frontend` then:   
 [tailwindcss instalation guide](https://tailwindcss.com/docs/guides/nextjs)   
 
@@ -23,4 +23,4 @@ to start next js project \
 
 and voila!
 
-Api used [PokeApi](https://pokeapi.co/)
+Api used: [PokeApi](https://pokeapi.co/)
