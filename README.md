@@ -10,6 +10,7 @@ npm i cors
 npm i dotenv
 npm i express
 npm i nodemon
+// or simply npm install
 ```
 right after that the front end packages but fird we chagne directory to front end like so `cd frontend` then:   
 [tailwindcss instalation guide](https://tailwindcss.com/docs/guides/nextjs)   
