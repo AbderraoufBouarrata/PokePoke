@@ -4,7 +4,6 @@ import { useDebounce } from '../hooks/useDebounce'
 
 export default function SearchParameters(props) {
     const { details, setDetails } = props
-    const detailsCopy = details
     const [showSortDropdown, setShowSortDropdown] = useState(false)
     const [showTypeDropdown, setShowTypeDropdown] = useState(false)
     const [showRegionDropdown, setShowRegionDropdown] = useState(false)
@@ -14,7 +13,8 @@ export default function SearchParameters(props) {
     const types = ['normal', 'fire', 'water', 'grass', 'electric', 'ice',
         'fighting', 'poison', 'ground', 'flying', 'psychic', 'bug', 'rock',
         'ghost', 'dragon', 'dark', 'steel', 'fairy']
-
+    const regions = ['kanto', 'johto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'alola', 'galar']
+    
     function handleSearchChange(event) {
         setIsLoading(true)
         if (!event.target.value==='') return setIsLoading(false)
@@ -45,27 +45,24 @@ export default function SearchParameters(props) {
     function handleSortChange(event) {
         setIsLoading(true)
         if (event.target.value === 'id') {
-            let temp = [...details].sort((a, b) => a.id - b.id)
-            setDetails(temp)
+            setDetails([...details].sort((a, b) => a.id - b.id))
         } else if (event.target.value === 'name') {
-            let temp = [...details].sort((a, b) => a.name.localeCompare(b.name))
-            console.log("sorted by name", temp)
-            setDetails(temp)
+            setDetails([...details].sort((a, b) => a.name.localeCompare(b.name)))
         } else if (event.target.value === 'weight') {
-            let temp = [...details].sort((a, b) => a.weight - b.weight)
-            setDetails(temp)
+            setDetails([...details].sort((a, b) => a.weight - b.weight))
         } else if (event.target.value === 'height') {
-            let temp = [...details].sort((a, b) => a.height - b.height)
-            setDetails(temp)
+            setDetails([...details].sort((a, b) => a.height - b.height))
         }
         setIsLoading(false)
     }
 
     function handleTypeChange(event) {
-        if (event.target.textContent === 'All') {
+        if (event.target.value === 'all') {
+            setDetails(copy)
             return
         } else {
-            setDetails(detailsCopy.filter(pokemon => pokemon.types.includes(event.target.textContent)))
+            let filteredPokemons = details.filter(pokemon => pokemon.types.some(type => type.type.name === event.target.value));
+            setDetails(filteredPokemons)
         }
     }
 
@@ -81,27 +78,25 @@ export default function SearchParameters(props) {
         setIsLoading(false)
     }
     return (
-        <form className='flex md:flex-row md:gap-16 md:justify-center md:m-8 m-4 gap-4 flex-col items-center'>
+        <form className='flex md:flex-row lg:gap-16 md:justify-center md:m-8 m-4 gap-4 flex-col-reverse items-center'>
             <div className='w-40'>
                 <select onChange={(e) => handleSortChange(e)} id="countries" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                    <option defaultValue>Sort By </option>
+                    <option velue='all' defaultValue>Sort By ...</option>
                     <option value="name">Name</option>
                     <option value="id">ID</option>
                     <option value="weight">Weight</option>
                     <option value="height">Height</option>
                 </select>
-
             </div>
             <div className='w-40'>
-                <select id="countries" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                    <option defaultValue>Filter: Type</option>
+                <select onChange={(e)=>handleTypeChange(e)} id="countries" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <option value='all' defaultValue>Filter: Type (all)</option>
                     {
                         types.map((type, index) => {
                             return <option key={index} value={type}>{type}</option>
                         })
                     }
                 </select>
-
             </div>
             <div className='w-40'>
                 <select id="countries" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
@@ -113,7 +108,7 @@ export default function SearchParameters(props) {
             <div className="flex w-96">
 
                 <div className="relative w-full">
-                    <input onChange={handleSearchChange} type="search" id="search-dropdown" className="block p-2.5 md:w-96 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-lg border-l-gray-50 border-l-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-l-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500" placeholder="Search Pokemon By Name" />
+                    <input onChange={()=> handleSearchChange} type="search" id="search-dropdown" className="block p-2.5 md:w-96 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-lg border-l-gray-50 border-l-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-l-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500" placeholder="Search Pokemon By Name" />
                     <button onClick={() => handleSearchChange()} className="absolute top-0 right-0 p-2.5 text-sm font-medium text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                         {
                             isLoading ?
